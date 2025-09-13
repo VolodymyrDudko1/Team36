@@ -4,6 +4,8 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        Cage a=new Cage();
+        Cage b= a.Clone() as Cage;
+        Console.WriteLine(a.CageId + b.CageId);
     }
 }
