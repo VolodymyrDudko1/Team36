@@ -1,0 +1,115 @@
+Замість того, щоб new Dog(...) або new Cat(...) писати прямо в бізнес-логіці, ми викликаємо фабричний метод CreateAnimal(...) у базовому класі-творці. 
+А який саме тип буде створено (Dog/Cat/Rabbit) — вирішує конкретний творець (підклас).
+
+Навіщо:
+
+ізолює “вибір класу” від алгоритму: алгоритм прийому тварини один, а тип тварини — змінний;
+
+полегшує розширення: додав новий вид тварини → просто зробив новий Concrete Creator + Concrete Product, не чіпаючи існуючий код алгоритму.
+
+Ключові ролі в патерні:
+
+Creator (Творець): має фабричний метод (абстрактний/віртуальний) та загальний алгоритм.
+
+Concrete Creator: перевизначає фабричний метод і повертає конкретний продукт.
+
+Product (Продукт): абстракція створюваних об’єктів.
+
+Concrete Product: конкретна реалізація продукту.
+
+/////
+
+Product / Concrete Product
+
+IAnimal — Product (контракт):
+
+Властивості: Name, AgeYears, Species, Notes.
+
+Методи: PrintCard(), EstimateMonthlyCareCost() (стаби).
+
+AnimalBase — абстрактна базова реалізація спільної поведінки тварин:
+
+Реалізує сховище властивостей.
+
+Має віртуальний PrintCard() (шаблон виводу).
+
+Dog, Cat, Rabbit — Concrete Product:
+
+Успадковують AnimalBase.
+
+Визначають Species і свою заглушкову логіку витрат:
+
+Dog → 1500 UAH/міс
+
+Cat → 900 UAH/міс
+
+Rabbit → 600 UAH/міс
+
+Creator / Concrete Creator (Фабричний метод)
+
+AnimalIntakeService — Creator:
+
+Оголошує фабричний метод:
+
+protected abstract IAnimal CreateAnimal(IntakeRecord record);
+
+
+Містить незмінний алгоритм прийому Intake(record):
+
+первинний огляд та реєстрація (виводимо в консоль),
+
+викликає CreateAnimal(record) → тут і відбувається “виробництво” конкретного IAnimal,
+
+призначає вольєр AssignKennel(animal),
+
+повертає створену тварину.
+
+AssignKennel(...) — віртуальний метод (стаб логіки розміщення).
+
+DogIntakeService, CatIntakeService, RabbitIntakeService — Concrete Creator:
+
+Кожен перевизначає CreateAnimal(record):
+
+DogIntakeService → new Dog(...)
+
+CatIntakeService → new Cat(...)
+
+RabbitIntakeService → new Rabbit(...)
+
+Жоден не змінює алгоритм Intake(...) — лише тип створюваного продукту.
+
+Доменно-утилітарні класи (для повноти предметної області)
+
+IntakeRecord — дані про тварину на вході (ім’я, вік, нотатки).
+Використовується фабричним методом як “сировина” для створення конкретної тварини.
+
+Kennel — вольєр/клітка; повертається методом AssignKennel(...).
+
+Adopter — усиновитель (ім’я, телефон) — використовується в сервісі усиновлення.
+
+AdoptionService — сервіс-стаб усиновлення:
+
+Adopt(IAnimal, Adopter) виводить у консоль кроки “документи/договір/статус”, завжди “успіх” у демо.
+
+/////
+Послідовність виконання (життєвий цикл одного запуску)
+
+Користувач вводить вид тварини → вибирається конкретний Creator (напр., DogIntakeService).
+
+Program формує IntakeRecord і викликає intake.Intake(record).
+
+AnimalIntakeService.Intake(...):
+
+друкує “первинний огляд…”,
+
+викликає CreateAnimal(record) → у випадку DogIntakeService створюється Dog,
+
+викликає AssignKennel(...) → отримує код вольєра (D-12/C-07/R-01),
+
+друкує “прийом завершено” і повертає створений IAnimal.
+
+Program викликає animal.PrintCard() → показує картку й EstimateMonthlyCareCost().
+
+Program читає ім’я усиновителя, створює Adopter,
+
+викликає AdoptionService.Adopt(animal, adopter) → імітує процес усиновлення.
