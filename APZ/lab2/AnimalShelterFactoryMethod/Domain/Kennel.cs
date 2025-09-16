@@ -1,14 +1,8 @@
-namespace AnimalShelter.App.Domain
+namespace AnimalShelterFactoryMethod.Domain
 {
-/// <summary>
-/// Клас предметної області: Вольєр/клітка.
-/// </summary>
-public sealed class Kennel
-{
-public Kennel(string code)
-{
-Code = code;
-}
-public string Code { get; }
-}
+    public sealed class Kennel
+    {
+        public Kennel(string code) { Code = code; }
+        public string Code { get; }
+    }
 }
