@@ -1,14 +1,10 @@
-using AnimalShelter.App.Domain;
+using AnimalShelterFactoryMethod.Domain;
 
-
-namespace AnimalShelter.App.Creators
+namespace AnimalShelterFactoryMethod.Creators
 {
-/// <summary>
-/// Concrete Creator: створює собаку.
-/// </summary>
-public sealed class DogIntakeService : AnimalIntakeService
-{
-protected override IAnimal CreateAnimal(IntakeRecord record)
-=> new Dog(record.Name, record.AgeYears, record.Notes);
-}
+    public sealed class DogIntakeService : AnimalIntakeService
+    {
+        protected override IAnimal CreateAnimal(IntakeRecord record)
+            => new Dog(record.Name, record.AgeYears, record.Notes);
+    }
 }
