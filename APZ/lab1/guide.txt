@@ -1,0 +1,28 @@
+1. AnimalShelter
+Description:
+The AnimalShelter class represents a shelter that manages animals, cages, and logging activities. It acts as the main orchestrator for adding animals to cages and ensuring their intake is logged.
+Purpose:
+
+Centralizes the management of animals and cages.
+Demonstrates interaction between the Singleton (Logger) and Prototype (Cage) patterns.
+Provides methods to add animals to cages and log their intake.
+
+
+2. Logger (Singleton Pattern)
+Description:
+The Logger class is implemented as a Singleton, ensuring only one instance exists throughout the application. It logs messages to the console, such as when an animal is taken into the shelter.
+Purpose:
+
+Ensures a single point of access for logging activities.
+Prevents duplicate logging instances and resource waste.
+Provides a global logging mechanism for the AnimalShelter and other classes.
+
+
+3. Cage (Prototype Pattern)
+Description:
+The Cage class is designed using the Prototype pattern, allowing cages to be cloned rather than created from scratch. Each cage can hold an animal and may have unique properties (e.g., size, type).
+Purpose:
+
+Avoids the overhead of creating new cage instances repeatedly.
+Enables efficient duplication of cages with similar configurations.
+Supports dynamic cage management in the AnimalShelter.
